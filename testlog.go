@@ -42,6 +42,7 @@ func Close(name string) {
 
 func getLine(name string, format string, args ...interface{}) {
 	line := fmt.Sprintf(format, args...)
+
 	now := time.Now().Format("2006-01-02 15:04:05") + "\t" + line + "\n"
 
 	write(name, now)
@@ -53,7 +54,6 @@ func write(name string, message string) {
 
 	LogName[name].Filebyte.WriteString(message)
 	info, err := LogName[name].Filebyte.Stat()
-
 	if err != nil {
 		fmt.Printf("not found %v \n", name)
 	}

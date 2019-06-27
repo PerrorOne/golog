@@ -76,7 +76,9 @@ func Email(format string, args ...interface{}) {
 func Error(format string, args ...interface{}) {
 	// error日志，添加了错误函数，
 	name := "error"
-	format = format + printfileline() + "\n" // printfileline()打印出错误的文件和行数
+
+	format = printfileline() + format // printfileline()打印出错误的文件和行数
+
 	control(name, format, args...)
 }
 
