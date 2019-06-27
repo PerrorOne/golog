@@ -5,9 +5,25 @@
 ```
 
 ### 使用
-> 在main 函数开始直接调用InitLogger或 InitLoggerInConf 方法,  
-方法 1 , 直接指定配置(日志文件夹路径, 分割日志的大小, 单位Mb, 是否每天分割日志)    
+> 在main 函数开始直接调用InitLogger或 InitLoggerInConf 方法  
+```
+package main
+
+import (
+	"app"
+	"github.com/hyahm/golog"
+)
+
+func main() {
+	golog.InitLogger("/data/log", 0, false)
+	//goconfig.InitConf("showgo.conf")
+	app.ShowApp()
+}
+```
+方法 1 , 直接指定配置(日志文件夹路径, 分割日志的大小, 单位Mb, 是否每天分割日志)   
+```
 golog.InitLogger("/data/log", 0, false)  
+```
 方法 2, 从配置文件读取  
 ```
 golog.InitLoggerInConf()
