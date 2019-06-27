@@ -1,4 +1,4 @@
-package galog
+package golog
 
 import (
 	"github.com/hyahm/goconfig"
@@ -61,13 +61,13 @@ func Info(format string, args ...interface{}) {
 
 // open file，  所有日志默认前面加了时间，
 func Access(format string, args ...interface{}) {
-	// info,
+	// Access,
 	name := "access" // 文件名 生成的文件为 info.log
 	control(name, format, args...)
 }
 
 func Email(format string, args ...interface{}) {
-	// info,
+	// Email,
 	name := "email" // 文件名 生成的文件为 info.log
 	control(name, format, args...)
 }
@@ -76,9 +76,7 @@ func Email(format string, args ...interface{}) {
 func Error(format string, args ...interface{}) {
 	// error日志，添加了错误函数，
 	name := "error"
-
 	format = printfileline() + format // printfileline()打印出错误的文件和行数
-
 	control(name, format, args...)
 }
 

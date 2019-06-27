@@ -1,4 +1,4 @@
-package galog
+package golog
 
 import (
 	"fmt"
