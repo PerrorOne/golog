@@ -1,7 +1,6 @@
 package golog
 
 import (
-	"github.com/hyahm/goconfig"
 	"log"
 	"os"
 	"runtime"
@@ -14,23 +13,6 @@ var (
 )
 
 var LogName map[string]*file
-
-func InitLoggerInConf() {
-
-	LogName = make(map[string]*file, 0)
-
-	Logpath = goconfig.ReadString("logpath")
-	Logpath = addXieGang(Logpath)
-	//filepath.
-	err := os.MkdirAll(Logpath, 0755)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	FileSize = goconfig.ReadInt64("logsize") * (1 << 20) // 默认单位M
-	EveryDay = goconfig.ReadBool("logeveryday")
-
-}
 
 func InitLogger(logpath string, filesize int64, everyday bool) {
 
