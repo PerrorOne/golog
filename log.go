@@ -48,9 +48,17 @@ func Access(format string, args ...interface{}) {
 	control(name, format, args...)
 }
 
+// open file，  所有日志默认前面加了时间，
+func Debug(format string, args ...interface{}) {
+	// debug,
+	name := "debug" // 文件名 生成的文件为 debug.log
+	control(name, format, args...)
+}
+
+
 func Email(format string, args ...interface{}) {
 	// Email,
-	name := "email" // 文件名 生成的文件为 info.log
+	name := "email" // 文件名 生成的文件为 email.log
 	control(name, format, args...)
 }
 
