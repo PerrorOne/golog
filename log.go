@@ -10,6 +10,7 @@ var (
 	Logpath  string // 文件路径
 	FileSize int64  // 切割的文件大小
 	EveryDay bool   // 每天一个来切割文件 （这个比上面个优先级高）
+	StdOut bool
 )
 
 var LogName map[string]*file
@@ -17,7 +18,10 @@ var LogName map[string]*file
 func InitLogger(logpath string, filesize int64, everyday bool) {
 
 	LogName = make(map[string]*file, 0)
-
+	if logpath == "" {
+		StdOut = true
+		return
+	}
 	Logpath = addXieGang(logpath)
 	//filepath.
 	err := os.MkdirAll(Logpath, 0755)

@@ -11,7 +11,10 @@ import (
 )
 
 func control(name string, format string, args ...interface{}) {
-
+	if StdOut {
+		printLine(name, format, args...)
+		return
+	}
 	if _, ok := LogName[name]; !ok {
 		path := filepath.Join(Logpath, name+".log")
 
@@ -38,6 +41,15 @@ type file struct {
 
 func Close(name string) {
 	LogName[name].Filebyte.Close()
+}
+
+func printLine(name string, format string, args ...interface{}) {
+	line := fmt.Sprintf(format, args...)
+
+	now := time.Now().Format("2006-01-02 15:04:05")
+	msg := fmt.Sprintf("%s\t[%s]\t%s", now, name, line)
+	log.Println(msg)
+
 }
 
 func getLine(name string, format string, args ...interface{}) {
