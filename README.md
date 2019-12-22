@@ -5,7 +5,7 @@
 ```
 
 ### 使用
-> 在main 函数开始直接调用InitLogger或 InitLoggerInConf 方法  
+> 在main 函数开始直接调用InitLogger方法  
 ```
 package main
 
@@ -20,15 +20,12 @@ func main() {
 	app.ShowApp()
 }
 ```
-方法 1 , 直接指定配置(日志文件夹路径, 分割日志的大小, 单位Mb, 是否每天分割日志)   
+### 直接指定配置(日志文件夹路径, 分割日志的大小, 单位Mb, 是否每天分割日志)   
 ```
-golog.InitLogger("/data/log", 0, false)  
+golog.InitLogger("/data/log", 0, false)   // 如果不设置路径， 默认输出到控制台
 ```
-方法 2, 从配置文件读取  
-```
-golog.InitLoggerInConf()
-```
-已经带了, 后面任何地方直接调用方法即可写入, 每个方法都会生成一个文件   
+
+> 后面任何地方直接调用方法即可写入, 每个方法都会生成一个文件   
 ```
 golog.Info(format string, args ...interface{})
 golog.Access(format string, args ...interface{})
