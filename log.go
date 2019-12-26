@@ -1,42 +1,33 @@
 package golog
 
-import (
-	"log"
-	"os"
-	"runtime"
-)
+import "os"
 
 var (
-	Logpath  string // 文件路径
-	FileSize int64  // 切割的文件大小
-	EveryDay bool   // 每天一个来切割文件 （这个比上面个优先级高）
-	StdOut bool
+	logPath  = "" // 文件路径
+	fileSize uint64  // 切割的文件大小
+	everyDay bool   // 每天一个来切割文件 （这个比上面个优先级高）
+	stdOut bool
 )
 
-var LogName map[string]*file
+var logName map[string]*file
 
-func InitLogger(logpath string, filesize int64, everyday bool) {
-
-	LogName = make(map[string]*file, 0)
-	if logpath == "" {
-		StdOut = true
-		return
+func InitLogger(path string, size uint64, everyday bool) {
+	if path == "" {
+		stdOut = true
+	} else {
+		logName = make(map[string]*file, 0)
+		err := os.MkdirAll(path, 0755)
+		if err != nil {
+			panic(err)
+		}
+		fileSize = size
+		everyDay = everyday
 	}
-	Logpath = addXieGang(logpath)
-	//filepath.
-	err := os.MkdirAll(Logpath, 0755)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	FileSize = filesize * (1 << 20) // 默认单位M
-	EveryDay = everyday
 
 }
 
 //  需要一个日志，多一条就好
 // 最大缓存多少条日志
-const MAXCACHELOG = 10000
 
 // open file，  所有日志默认前面加了时间，
 func Info(format string, args ...interface{}) {
@@ -72,22 +63,4 @@ func Error(format string, args ...interface{}) {
 	name := "error"
 	format = printfileline() + format // printfileline()打印出错误的文件和行数
 	control(name, format, args...)
-}
-
-func addXieGang(path string) string {
-	l := len(path)
-	// 如果是windows
-	if runtime.GOOS == "windows" {
-		if path[l-1:] != "\\" {
-			return path + "\\"
-
-		}
-
-	} else {
-		if path[l-1:] != "/" {
-			return path + "/"
-
-		}
-	}
-	return path
 }
