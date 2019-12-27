@@ -4,14 +4,14 @@ import "os"
 
 var (
 	logPath  = "" // 文件路径
-	fileSize uint64  // 切割的文件大小
+	fileSize int  // 切割的文件大小
 	everyDay bool   // 每天一个来切割文件 （这个比上面个优先级高）
 	stdOut bool
 )
 
 var logName map[string]*file
 
-func InitLogger(path string, size uint64, everyday bool) {
+func InitLogger(path string, size int, everyday bool) {
 	if path == "" {
 		stdOut = true
 	} else {
