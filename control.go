@@ -81,7 +81,7 @@ func write(name string, message string) {
 		logName[name].Filebyte.Close()
 		delete(logName, name)
 
-	} else if fileSize > 0 && uint64(info.Size()) >= fileSize {
+	} else if fileSize > 0 && info.Size() >= fileSize {
 		// 根据文件大小来分割
 		prefix := fmt.Sprintf("%d", time.Now().UnixNano())
 		os.Rename(info.Name(), prefix+info.Name())
