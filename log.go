@@ -57,10 +57,16 @@ func Email(format string, args ...interface{}) {
 	control(name, format, args...)
 }
 
+func Sql(format string, args ...interface{}) {
+	// Email,
+	name := "sql" // 文件名 生成的文件为 email.log
+	control(name, format, args...)
+}
+
 // 可以根据下面格式一样，在format 后加上更详细的输出值
 func Error(format string, args ...interface{}) {
 	// error日志，添加了错误函数，
 	name := "error"
-	format = printfileline() + format // printfileline()打印出错误的文件和行数
+	format = printFileline() + format // printfileline()打印出错误的文件和行数
 	control(name, format, args...)
 }
