@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var now = time.Now().Format("2006-01-02 15:04:05")
+
 
 func control(name string, format string, args ...interface{}) {
 	// 判断是输出控制台 还是写入文件
@@ -79,7 +79,7 @@ func Close(name string) {
 }
 
 func printLine(name string, format string, args ...interface{}) {
-	//line := fmt.Sprintf(format, args...)
+	now := time.Now().Format("2006-01-02 15:04:05")
 	if len(args) > 0 {
 		tmp := make([]interface{},0)
 		tmp = append(tmp, now, name)
@@ -94,7 +94,7 @@ func printLine(name string, format string, args ...interface{}) {
 
 // 写入文件
 func getLine(name string, format string, args ...interface{}) {
-	//合成字符串
+	now := time.Now().Format("2006-01-02 15:04:05")
 	out := format
 	if len(args) > 0 {
 		tmp := make([]interface{},0)
