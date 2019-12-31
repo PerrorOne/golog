@@ -1,6 +1,9 @@
 package golog
 
-import "os"
+import (
+	"os"
+	"path/filepath"
+)
 
 var (
 	logPath  = "" // 文件路径
@@ -15,6 +18,7 @@ func InitLogger(path string, size int64, everyday bool) {
 	if path == "" {
 		stdOut = true
 	} else {
+		logPath = filepath.Clean(path)
 		logName = make(map[string]*file, 0)
 		err := os.MkdirAll(path, 0755)
 		if err != nil {
