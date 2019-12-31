@@ -97,13 +97,16 @@ func printLine(name string, format string, args ...interface{}) {
 // 写入文件
 func getLine(name string, format string, args ...interface{}) {
 	now := time.Now().Format("2006-01-02 15:04:05")
-	out := fmt.Sprintf("%s\t" + format, now)
+	var out string
 	if len(args) > 0 {
 		tmp := make([]interface{},0)
 		tmp = append(tmp, now)
 		tmp = append(tmp, args...)
 		out = fmt.Sprintf("%s\t" + format, tmp...)
+	} else {
+		out = fmt.Sprintf(now + "\t" + format)
 	}
+
 	write(name, out)
 
 }
