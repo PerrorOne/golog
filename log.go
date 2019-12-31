@@ -20,7 +20,7 @@ func InitLogger(path string, size int64, everyday bool) {
 	} else {
 		logPath = filepath.Clean(path)
 		logName = make(map[string]*file, 0)
-		err := os.MkdirAll(path, 0755)
+		err := os.MkdirAll(logPath, 0755)
 		if err != nil {
 			panic(err)
 		}
