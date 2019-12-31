@@ -1,8 +1,13 @@
 package golog
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+	"time"
+)
 
-func Test_log(t *testing.T) {
+func TestLog(t *testing.T) {
+	fmt.Println(time.Now())
 	InitLogger("../data",0,false)
 	Access("two")
 	Error("one")

@@ -10,8 +10,6 @@ import (
 	"time"
 )
 
-
-
 func control(name string, format string, args ...interface{}) {
 	// 判断是输出控制台 还是写入文件
 	if stdOut {
@@ -24,18 +22,17 @@ func control(name string, format string, args ...interface{}) {
 			prefix := fmt.Sprintf("%d-%d-%d", localtime.Year(), localtime.Month(), localtime.Day())
 			name = prefix + name
 			// 删掉上一天的句柄
-			localtime.AddDate(0,0,-1)
-			lastlog := fmt.Sprintf("%d-%d-%d", localtime.Year(), localtime.Month(), localtime.Day())
-			delname := filepath.Join(logPath, lastlog + name + ".log")
-			if v, ok := logName[delname]; ok {
-				v.Filebyte.Close()
-				delete(logName, delname)
-			}
+			//localtime.AddDate(0,0,-1)
+			//lastlog := fmt.Sprintf("%d-%d-%d", localtime.Year(), localtime.Month(), localtime.Day())
+			//delname := filepath.Join(logPath, lastlog + name + ".log")
+			//if v, ok := logName[delname]; ok {
+			//	v.Filebyte.Close()
+			//	delete(logName, delname)
+			//}
 
 			writeToFile(name , format , args...)
 			return
 		}
-
 		// 如果按照文件大小判断的话，名字不变
 		name = name + ".log"
 		name := filepath.Join(logPath, name)
@@ -46,23 +43,22 @@ func control(name string, format string, args ...interface{}) {
 
 func writeToFile(name string, format string, args ...interface{}) {
 	//
-	if _, ok := logName[name]; !ok {
+	//if _, ok := logName[name]; !ok {
 		//不存在就新建
-		f, err := os.OpenFile(name, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0644)
-		if err != nil {
-			// 如果失败，切换到控制台输出
-			log.Println("Permission denied,  auto change to Stdout")
-			stdOut = true
-			printLine(name, format, args...)
-			return
-		}
-
-		logName[name] = &file{
-			Mu:       &sync.Mutex{},
-			Filebyte: f,
-		}
-
+	f, err := os.OpenFile(name, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0644)
+	if err != nil {
+		// 如果失败，切换到控制台输出
+		log.Println("Permission denied,  auto change to Stdout")
+		stdOut = true
+		printLine(name, format, args...)
+		return
 	}
+	logName[name] = &file{
+		Mu:       &sync.Mutex{},
+		Filebyte: f,
+	}
+
+	//}
 	// 写入的时候加锁， 防止串行
 	logName[name].Mu.Lock()
 	defer logName[name].Mu.Unlock()
@@ -76,6 +72,12 @@ type file struct {
 
 func Close(name string) {
 	logName[name].Filebyte.Close()
+}
+
+func Sync() {
+	for _, v := range logName {
+		v.Filebyte.Close()
+	}
 }
 
 func printLine(name string, format string, args ...interface{}) {
@@ -95,7 +97,7 @@ func printLine(name string, format string, args ...interface{}) {
 // 写入文件
 func getLine(name string, format string, args ...interface{}) {
 	now := time.Now().Format("2006-01-02 15:04:05")
-	out := format
+	out := fmt.Sprintf("%s\t" + format, now)
 	if len(args) > 0 {
 		tmp := make([]interface{},0)
 		tmp = append(tmp, now)
@@ -109,6 +111,7 @@ func getLine(name string, format string, args ...interface{}) {
 func write(name string, message string) {
 	//fmt.Println("write")
 	//
+	defer logName[name].Filebyte.Close()
 	if fileSize > 0 {
 		//如果是按照大小切割
 		info, err := logName[name].Filebyte.Stat()
@@ -141,10 +144,10 @@ func write(name string, message string) {
 
 		}
 	}
-	logName[name].Filebyte.WriteString(message)
-
+	logName[name].Filebyte.WriteString(message + "\n")
 
 }
+
 
 func printFileline() string {
 
